@@ -1,0 +1,29 @@
+<script>
+  // 输入一个整数，将这个整数以字符串的形式逆序输出
+  // 程序不考虑负数的情况，若数字含有0，则逆序形式也含有0，如输入为100，则输出为001
+
+  // 方法一 原型上加方法
+  Number.prototype.reverse = function () {
+    var s = this.toString();
+    var a = [];
+    for (var i = 0; i < s.length; i++) {
+      a.unshift(s[i]);
+    }
+    return a.join("");
+  }
+
+  function reverseNum(num) {
+    return num.reverse()
+  }
+
+  console.log(reverseNum(456))
+
+  // 方法二
+  function reverseNum2(num) {
+    const numArray = String(num).split('')
+    numArray.reverse()
+    return numArray.join('')
+  }
+  console.log(reverseNum2(456))
+
+</script>

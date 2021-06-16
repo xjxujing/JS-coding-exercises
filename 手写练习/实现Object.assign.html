@@ -1,0 +1,26 @@
+<script>
+  // 可枚举的属性浅拷贝一份
+  function myAssign(target, ...sources) {
+
+    if (target === null || target === undefined) {
+      return new TypeError('Cannot convert undefined or null to object')
+    }
+
+    sources.forEach(item => {
+      for (const key in item) {
+        if (item.hasOwnProperty(key)) {
+          target[key] = item[key]
+        }
+      }
+    })
+    return target
+  }
+
+
+  const a = { a: 123 }
+  const b = { b: 456 }
+
+  console.log(Object.assign(a, b))
+  console.log(myAssign(a, b))
+
+</script>

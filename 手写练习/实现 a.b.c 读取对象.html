@@ -1,0 +1,36 @@
+<script>
+  var obj = {
+    a: {
+      b: {
+        c: 1,
+      },
+    },
+  };
+
+  var str = "a.b.c";
+
+  // 实现 find(obj, str) 的值是 1
+
+
+  // 方法一
+  // function find(obj, str) {
+  //   const keysArray = str.split('.')
+  //   let result = obj
+
+  //   let i = 0
+  //   while(i < keysArray.length){
+  //     result = result[keysArray[i]]
+  //     i++
+  //   }
+  //   return result 
+  // }
+
+  // 方法二
+  function find(obj, str) {
+    const keysArray = str.split('.')
+
+    return keysArray.reduce((obj, key) => obj[key], obj)
+  }
+  console.log(find(obj, str))
+
+</script>

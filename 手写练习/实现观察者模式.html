@@ -1,0 +1,43 @@
+<script>
+  // vue2 视图依赖数据，数据变化后“主动通知”视图更新
+  // 观察者(必须要有 update 方法) 和  被观察者 两个类 可以看看 UML 类图
+
+  class Subject {
+    constructor(name) {
+      this.name = name
+      this.observers = []
+      this.state = '开心'
+    }
+
+    attach(o) {
+      this.observers.push(o) // 订阅模式，被观察者需要接受观察者
+    }
+
+    setState(newSate) {
+      this.state = newSate
+      this.observers.forEach(o => o.update(newSate))
+    }
+  }
+
+  class Observers {
+    constructor(name) {
+      this.name = name
+    }
+
+    update(state) {
+      console.log(this.name + '：' + '当前状态是' + state)
+    }
+  }
+
+
+
+  let s = new Subject('宝宝')
+  let o1 = new Observers('妈妈')
+  let o2 = new Observers('爸爸')
+
+  s.attach(o1)
+  s.attach(o2)
+
+  s.setState('不开心')
+  s.setState('开心')
+</script>

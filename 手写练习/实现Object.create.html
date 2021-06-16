@@ -1,0 +1,22 @@
+<script>
+  // The Object.create() method creates a new object, 
+  // using an existing object as the prototype of the newly created object.
+
+  const a = { a: 123 }
+  console.log(Object.create(a))
+
+
+  Object.prototype.myCreate = function (obj) {
+    // function Fn() {}
+    // Fn.prototype = obj
+    // return new Fn()
+
+    const newObj = {}
+
+    newObj.__proto__ = obj
+    return newObj
+  }
+
+  console.log(Object.myCreate(a))
+
+</script>

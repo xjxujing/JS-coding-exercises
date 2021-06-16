@@ -1,0 +1,43 @@
+<script src="./myPromise链式调用.js"></script>
+<script>
+  /**
+   * 实现基础 Promise 分析
+   * 1. Promise 是一个类
+   * 2. 有三个状态 pending fulfilled reject
+   * 3. 只有 pending 状态可以变为其他的状态
+   * 4. 成功或失败都可以传递参数
+   * 5. 可以通过 throw error 走失败状态
+   * 6. new Promise 通常传的是异步操作
+  */
+
+  // 1. Promise 是一个类 2.有三个状态 pending fulfilled reject
+  let p = new Promise((resolve, reject) => {
+    // 5.可以通过 throw error 走失败状态
+    // throw new Error('主动抛出错误')
+
+    // 3.只有 pending 状态可以变为其他的状态 4. 成功或失败都可以传递参数
+    // resolve('ok')
+    // reject('fail')
+
+    // 6. new Promise 通常传的是异步操作
+    setTimeout(() => {
+      // resolve('ok setTimeout 异步操作')
+      reject('fail setTimeout 异步操作')
+    }, 1000)
+  })
+
+
+  p.then((value) => {
+    console.log('success：', value)
+  }, (reason) => {
+    console.log('fail：', reason)
+  })
+
+
+  // 可以给多个 then
+  p.then((value) => {
+    console.log('success2：', value)
+  }, (reason) => {
+    console.log('fail2：', reason)
+  })
+</script>

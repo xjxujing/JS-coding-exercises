@@ -1,0 +1,82 @@
+<script src="./myPromise链式调用.js"></script>
+<script>
+  /**
+   * 1. Promise 是一个类
+   * 2. 有三个状态 pending fulfilled reject
+   * 3. 只有 pending 状态可以变为其他的状态
+   * 4. 成功或失败都可以传递参数
+   * 5. 可以通过 throw error 走失败状态
+   * 6. new Promise 通常传的是异步操作
+  */
+
+  // 1. Promise 是一个类 2.有三个状态 pending fulfilled reject
+  let p = new Promise((resolve, reject) => {
+    // 5.可以通过 throw error 走失败状态
+    // throw new Error('主动抛出错误')
+
+    // 3.只有 pending 状态可以变为其他的状态 4. 成功或失败都可以传递参数
+    // resolve('ok')
+    // reject('fail')
+
+    // 6. new Promise 通常传的是异步操作
+    setTimeout(() => {
+      resolve('ok setTimeout 异步操作')
+      reject('fail setTimeout 异步操作')
+    }, 1000)
+  })
+
+
+  /**
+   * 分析 Promise 链式调用的 then 
+   * 1. 如果 then 中，成功或失败的回调返回的是 promise，会采用返回的 promise 状态
+   * 2. 如果返回的是普通值（不是 promise），将返回结果传递到下一次的 then 的成功回调中去
+   * 3. 如果执行出错，走下一次 then 的失败的回调
+   * 
+  */
+  // p.then((value) => {
+  //   console.log('success：', value)
+  //   return new Promise((resolve, reject) => {
+  //     resolve('第一层 then 返回的 promise')
+  //   })
+  // }, (reason) => {
+  //   console.log('fail：', reason)
+  //   throw new Error('出错啦')
+  // })
+  //   .then(data => {
+  //     console.log('这里是链式调用的1：', data)
+  //     throw new Error('这里是链式调用的1：出错啦')
+  //   }, res => {
+  //     console.log('这里是链式调用的 1 的失败的：', res)
+  //     return 300
+  //   })
+  //   .then((data) => {
+  //     console.log('这里是链式调用的2：', data)
+  //   }, res => {
+  //     console.log('这里是链式调用的2 的失败的：', res)
+
+  //   })
+
+  //4. 透传参数
+  // new Promise(resolve => { resolve(123) }).then().then().then((data) => {
+  //   console.log(data)
+  // })
+
+  // new Promise((resolve, reject) => { reject(123) }).then().then().then((data) => {
+  //   console.log('data', data)
+  // },res => {
+  //   console.log('res', res)
+  // })
+
+  // 5. 
+  new Promise(resolve => {
+    resolve(1)
+  }).then(() => {
+    // return 456
+    return new Promise(resolve => {
+      resolve(123132132)
+    })
+  }).then(data => {
+    console.log('5. data：', data)
+  })
+
+</script>

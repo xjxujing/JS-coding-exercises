@@ -1,0 +1,24 @@
+<script>
+  function curring(fn) {
+    let args = []
+
+    const inner = (arr = []) => {
+      args.push(...arr)
+      return args.length >= fn.length ? fn(...args) : (...args) => inner(args)
+    }
+
+    return inner()
+  }
+
+
+
+  // 测试
+  function sum(a, b, c, d) {
+    return a + b + c + d
+  }
+
+  let fn = curring(sum)
+
+  console.log(fn(1)(2, 3)(4))
+
+</script>

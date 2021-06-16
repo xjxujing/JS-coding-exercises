@@ -1,0 +1,29 @@
+<script>
+  function changeStr(obj) {
+    obj.htmlStr = 'aaa'
+    obj = new Object()
+    obj.htmlStr = 'bbb'
+  }
+
+  const o = new Object()
+  changeStr(o)
+  console.log(o.htmlStr)
+
+
+  class Student {
+    constructor(name) {
+      this.name = "Tom";
+    }
+
+    getInfo() {
+      return {
+        name: "Jerry",
+        getName: (function () {
+          return this.name;
+        }).bind(this),
+      };
+    }
+  }
+  let s = new Student();
+  console.log(s.getInfo().getName());
+</script>

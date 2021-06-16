@@ -1,0 +1,67 @@
+:root {
+	--active-border-color: #f0da50;
+	--bg-color: #f4f4f4;
+	--text-color: #6d6d6d;
+	--tab-bg-color: #ffffff;
+}
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+		Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+	font-size: 1rem;
+	background-color: var(--bg-color);
+	color: var(--text-color);
+}
+
+.container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100vh;
+	overflow: hidden;
+}
+
+.tabs {
+	display: flex;
+	flex-direction: column;
+	min-height: 200px;
+	background-color: var(--tab-bg-color);
+	padding: 10px;
+	border-radius: 5px;
+	width: 350px;
+}
+
+.tabs ul {
+	list-style: none;
+	display: flex;
+	justify-content: space-between;
+	border-radius: 5px;
+}
+
+.tabs ul li {
+	width: 100%;
+	text-align: center;
+	padding: 5px;
+	margin-left: 5px;
+	cursor: pointer;
+	font-size: 1.1rem;
+}
+
+.tabs ul li:hover {
+	border-bottom: solid 2px var(--active-border-color);
+}
+
+.tabs ul li.active {
+	border-bottom: solid 2px var(--active-border-color);
+	font-weight: bold;
+}
+
+.tabs .content {
+	padding: 10px;
+	margin: 10px auto;
+}

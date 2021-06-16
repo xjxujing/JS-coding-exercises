@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <ul id="menu">
+    <li><a href="#news">news</a></li>
+    <li><a href="#about">about</a></li>
+    <li><a href="#contact">contact</a></li>
+  </ul>
+  <div class="content">
+    <h2>当前内容页：index.html</h2>
+  </div>
+
+  <script>
+    var oA = document.getElementsByTagName("a");
+    var oContent = document.getElementsByClassName("content")[0];
+    var defaultURL = location.href;
+    var data = "";
+    var lastdata = "";
+    // 注意返回的是类数组,要转成数组以使用forEach()方法
+    oA = Array.prototype.slice.call(oA);
+
+    function getContent(data) {
+      // console.log
+      oContent.innerHTML = data;
+    }
+    oA.forEach(function (ele, index) {
+      ele.onclick = function () {
+        // console.log(this);
+        var data = this.getAttribute("href");
+        // console.log(data);
+        var newURL = data;
+
+        // // 判断url后面是否有参数
+        if (!location.search) {
+          history.replaceState(null, "", newURL)
+          oContent.innerHTML = newURL;
+        } else if (data != lastdata) { // 性能优化：点击同一个不发送请求
+          history.pushState(null, "", newURL);
+
+        }
+        lastdata = data;
+        // 取消点击a的默认事件(刷新)
+        return false;
+      }
+    });
+
+    // 第一次不点击news,回退后不显示内容，因为初始情况后面没有value=的参数
+    // oA[0].onclick();
+
+    // 点击回退或向前,改变内容(发送ajax请求)
+    window.onpopstate = function (e) {
+      console.log(e)
+      var data = e.state.name;
+      console.log(data);
+      lastdata = data;  // 注意覆盖当前lastdata，用于判断是否点击的是同一个
+    }
+  </script>
+</body>
+
+</html>

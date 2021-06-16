@@ -1,0 +1,47 @@
+<script>
+  let target = {
+    b: 'bbbbb'
+  }
+
+
+  let targetProxy = new Proxy(target, {
+    set(target, propKey, value, receiver) {
+      console.log({ target, propKey, value, receiver })
+      target[propKey] = value
+      return target
+    },
+
+    has(target, propKey) {
+      console.log('是否有的拦截')
+      return propKey in target
+    }
+  })
+
+  targetProxy.a = 1
+
+
+
+  function sum(a, b) {
+    return a + b
+  }
+
+  const sumProxy = new Proxy(sum, {
+    apply() {
+      console.log('apply', ...arguments)
+      return Reflect.apply(...arguments)
+    }
+  })
+
+
+  function testFn(...args) {
+    console.log(this)
+    console.log(...args)
+  }
+
+  testFn(1, 2, 3, 456)
+
+  // testFn.call('ad', 1, 2, 3, 456)
+
+
+  Reflect.apply(testFn, 132, [789789789798])
+</script>

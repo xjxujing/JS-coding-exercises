@@ -1,0 +1,16 @@
+<script>
+  Array.prototype.myForEach = function (callback, context) {
+    let ctx = Object(context)
+
+    const myArray = this
+    for (let i = 0; i < myArray.length; i++) {
+      callback.call(ctx, myArray[i], i, myArray)
+    }
+  }
+
+  const testArray = [1, 2, 3]
+
+  testArray.myForEach((item, index, array) => {
+    console.log({ item, index, array })
+  })
+</script>

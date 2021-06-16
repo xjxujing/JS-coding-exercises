@@ -1,0 +1,23 @@
+<script>
+  // 给定的 n 个数中随机取出 m 个数，要求等概率；
+
+  // n = 5：0 1 2 3 4， 随机取 m = 2个数
+
+
+  /**
+   * 问题描述：
+   * 程序的输入包含两个整数m和n，其中m<n。输出是0~n-1范围内的m个随机整数，要求：每个数选择出现的概率相等，且按序输出。
+   */
+
+
+  function get_m_number_from_n_number(n, m) {
+    for (let i = 0; i < n; i++) {
+      let randomNumber = Math.floor(Math.random() * 100)
+      if (randomNumber % n <= m) {
+        console.log(i)
+        m--
+      }
+      n--
+    }
+  }
+</script>

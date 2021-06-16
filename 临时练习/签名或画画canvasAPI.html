@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>签名</title>
+
+  <style>
+    #canvas {
+      border: 1px solid;
+      width: 400px;
+      height: 400px;
+    }
+  </style>
+</head>
+
+<body>
+  <canvas id="canvas" width="800" height="800"></canvas>
+  <script>
+
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+
+    // ctx.fillStyle = 'black'
+
+    // canvas.onmousedown = function (e) {
+
+    // }
+    // canvas.onmousemove = function (e) {
+    //   ctx.beginPath()
+    //   ctx.lineCap = 'round'
+    //   ctx.arc(e.clientX - 50, e.clientY - 50, 25, 0, Math.PI * 2)
+    //   ctx.fillStyle = '#fff'
+    //   ctx.fill()
+    // }
+
+    const img = new Image()
+    img.src = '../image/pexels-photo-3990673.png'
+
+    img.onload = () => {
+      ctx.drawImage(img, 0, 0, 800, 800)
+      const data = ctx.getImageData(0, 0, 50, 50)
+      const newData = reverse(data)
+
+      ctx.putImageData(newData, 0, 0)
+
+
+
+      const base64Data = canvas.toDataURL()
+
+
+      const img2 = new Image()
+      img2.src = base64Data
+      document.body.appendChild(img2)
+
+    }
+
+
+    function reverse(imgData) {
+      for (let i = 0; i < imgData.data.length; i += 4) {
+        imgData.data[i + 0] = 255 - imgData.data[i + 0]
+        imgData.data[i + 0] = 255 - imgData.data[i + 0]
+        imgData.data[i + 0] = 255 - imgData.data[i + 0]
+      }
+      return imgData
+    }
+
+
+    let y = 0
+
+    // function drop() {
+    //   ctx.clearRect(0, 0, 400, 400)
+
+    //   ctx.fillRect(100, y, 50, 50)
+    //   if (y >= 350) {
+    //     ctx.fillRect(100, 400, 50, 50)
+    //     return false
+    //   } else {
+    //     y = y + 10
+    //     requestAnimationFrame(drop)
+    //   }
+    // }
+
+    // drop()
+
+
+
+
+
+  </script>
+</body>
+
+</html>

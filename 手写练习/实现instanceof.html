@@ -1,0 +1,29 @@
+<script>
+
+  // 定义构造函数
+  function C() { }
+  function D() { }
+
+  var o = new C();
+  o instanceof C;
+
+  // function myInstanceof(instanceObj, constructorFn) {
+  //   return Object.getPrototypeOf(instanceObj)  === constructorFn.prototype
+  // }
+
+  // instanceof 是判断构造函数的原型是否存在于 实例对象 的原型链上
+  function myInstanceof(instanceObj, constructorFn) {
+
+    let instanceObjPrototype = Object.getPrototypeOf(instanceObj)
+    while (true) {
+      if (instanceObjPrototype === null) return false
+
+      if (instanceObjPrototype === constructorFn.prototype) return true
+
+      instanceObjPrototype = Object.getPrototypeOf(instanceObjPrototype)
+    }
+  }
+
+  console.log(myInstanceof(o, Object))
+  console.log(myInstanceof(o, C))
+</script>

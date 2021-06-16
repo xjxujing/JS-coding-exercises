@@ -1,0 +1,81 @@
+<script>
+  const arr = [1, 2, 3, 4, [1, 2, 3, [1, 2, 3, [1, 2, 3]]], 5, "string", { name: "弹铁蛋同学" }];
+
+  console.log(arr.flat(Infinity))
+
+
+
+  // 方法一
+  // function myFlat(array) {
+  //   const flatArray = []
+
+  //   for (let key in array) {
+  //     item = array[key]
+  //     if (Array.isArray(item)) {
+  //       flatArray.push(...myFlat(item))
+  //       // flatArray = flatArray.concat(myFlat(item))
+  //     } else {
+  //       flatArray.push(item)
+  //     }
+  //   }
+
+  //   return flatArray
+
+  // }
+
+
+  // 这里的写法 参考了深拷贝
+  function myFlat2(item) {
+    if (Array.isArray(item)) {
+      let flatArray = []
+
+      // for (const key in item) {
+      //   flatArray = flatArray.concat(myFlat2(item[key]))
+      // }
+      item.forEach(ele => {
+        flatArray = flatArray.concat(myFlat2(ele))
+      })
+
+      return flatArray
+    } else {
+      return item
+    }
+  }
+  console.log(myFlat2(arr))
+
+
+
+  // 方法二
+  // function myFlat(array) {
+  //   return array.reduce((flatArray, item) => {
+  //     return flatArray.concat(Array.isArray(item) ? myFlat(item) : item)
+  //   }, [])
+  // }
+
+  // 方法三 stack， 不要用 queue 会改变顺序
+  // 从后面一个一个判断 结果用 unshift 处理
+  function myFlat(array) {
+
+    const stack = [].concat(array)
+
+    const flatArray = []
+
+    while (stack.length) {
+      let item = stack.pop()
+
+      if (Array.isArray(item)) {
+        stack.push(...item) // 如果是数组再次入栈，并且展开了一层
+      } else {
+        flatArray.unshift(item)
+      }
+    }
+
+    return flatArray
+  }
+
+
+
+  console.log(myFlat(arr))
+
+  // 后面想想 array.myFlat() 是否可以实现
+</script>

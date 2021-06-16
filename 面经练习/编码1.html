@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+
+
+  <style>
+    .back-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: #fff;
+      transition: background-color 0.8s;
+    }
+
+    .back-btn:hover {
+      transition: background-color 0.8s;
+      background-color: #eeeeee;
+    }
+
+    .back-arrow {
+      width: 10px;
+      height: 10px;
+      border-width: 4px 0 0 4px;
+      border-style: solid;
+      border-color: #ccc;
+      transform: translateX(2px) rotateZ(-45deg);
+    }
+
+
+    .box {
+      position: relative;
+      width: 200px;
+      height: 180px;
+      border: 1px solid;
+    }
+
+    .box::after {
+      position: absolute;
+      display: block;
+      right: -12px;
+      content: '';
+      width: 10px;
+      height: 10px;
+      border-width: 1px 1px 0 0;
+      border-style: solid;
+      transform-origin: left top;
+      transform: translateY(20px) rotateZ(45deg);
+      background-color: #fff;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- 实现一个chrome浏览器的后退按钮，鼠标移入有深色的圆形背景，内部是一个90度的角。 -->
+  <div class="back-btn">
+    <div class="back-arrow"></div>
+  </div>
+
+  <hr>
+
+  <!-- 带箭头的框框 -->
+  <div class="box"></div>
+
+  <hr>
+
+  <a target="_blank" href="https://www.baidu.com">测试 target="blank"</a>
+
+  <a target="codepen-documentation" href="https://blog.codepen.io/documentation/">
+    About Asset Hosting
+  </a>
+
+  <script>
+    // 面经 某银行前端一年半经验进字节面经
+    // https://juejin.cn/post/6959364219162607630
+
+    /** 
+     * 实现一个randomString函数，返回一个数组，
+     * 该数组内有一千个字符串，
+     * 每串字符串为 6 位数 0-9 的随机验证码，不可重复。
+    */
+    function randomString() {
+      // 000000 - 999999
+      //  write your code here
+
+
+      // 方式一 Set、padStart
+      const randomStrSetSize = 5
+      const randomStrSet = new Set()
+      while (randomStrSet.size < randomStrSetSize) {
+        const randomNum = Math.floor(Math.random() * 1000000)
+        const randomNumStr = String(randomNum).padStart('6', 0)
+        randomStrSet.add(randomNumStr)
+      }
+      return [...randomStrSet]
+    }
+    console.log(randomString())
+
+
+    /** 
+     * 实现一个sum函数，接收一个arr
+     * 累加arr的项，只能使用add方法，
+     * 该方法接收两个数，
+     * 模拟异步请求后端返回一个相加后的值
+    */
+    function add(a, b) {
+      return Promise.resolve(a + b);
+    }
+
+    async function sum1(arr) {
+
+      const myArr = [...arr]
+      const len = myArr.length
+      if (len % 2 !== 0) myArr.push(0)
+
+      let result = []
+      let i = 0
+      while (i < myArr.length) {
+        const res = await add(myArr[i], myArr[i + 1])
+        result.push(res)
+        i = i + 2
+      }
+
+      return result.reduce((cur, item) => cur + item, 0)
+    }
+
+
+
+    /**
+     * 变种：如果后端设置了并发限制
+     * 一次不能请求超过三个，怎么办
+    */
+    async function sum2(arr) {
+      const myArr = [...arr]
+      const len = myArr.length
+      if (len % 2 !== 0) myArr.push(0)
+
+      // 6 个一组，分几组 注意这里是补 0 后的数组
+      const groups = Math.floor(myArr.length / 6)
+      // 还剩几个, 然后两两分组
+      const remain = (myArr.length % 6) / 2
+
+
+      // 放结果
+      const result = []
+      let i = 0, flagNum = 0
+      while (flagNum < groups) {
+        const p = await Promise.all([
+          add(myArr[i], myArr[i + 1]),
+          add(myArr[i + 2], myArr[i + 3]),
+          add(myArr[i + 4], myArr[i + 5]),
+        ])
+        result.push(...p)
+        i = i + 6
+        flagNum++
+      }
+
+      if (remain === 1) { // 还剩 1 组
+        const p = await add(myArr[i], myArr[i + 1])
+        result.push(p)
+      } else if (remain === 2) { // 还剩 2 组
+        const p = await Promise.all([
+          add(myArr[i], myArr[i + 1]),
+          add(myArr[i + 2], myArr[i + 3])
+        ])
+        result.push(...p)
+      }
+
+
+      return result.reduce((cur, item) => cur + item, 0)
+    }
+
+
+    const arr = [1, 2, 3, 4, 5, 6, 7]
+
+
+    sum1(arr).then((result) => {
+      console.log(result)
+    })
+
+    sum2(arr).then((result) => {
+      console.log(result)
+    })
+
+
+    /**
+     * 常规题：把123456789，变成金钱模式，
+     * 即：12,345,678（思路有很多，比如reverse之后利用模除手动插入逗号...）
+    */
+    function ParseMoney(str) {
+      const strReverse = str.split('').reverse().join('')
+
+      const newStr = strReverse.replace(/(\d{3})/g, '$1,')
+      return [...newStr].reverse().join('')
+    }
+
+    console.log(ParseMoney('12345678911'))
+
+
+
+    /**
+     * 请实现抽奖函数rand，保证随机性
+     * 输入为表示对象数组，对象有属性n表示人名，w表示权重
+     * 随机返回一个中奖人名，中奖概率和w成正比
+    */
+    let peoples = [
+      { n: "p1", w: 100 },
+      { n: "p2", w: 200 },
+      { n: "p3", w: 1 },
+    ];
+    let rand = function (p) {
+      const totalWeight = p.reduce((cur, ele) => {
+        return ele.w + cur
+      }, 0)
+
+      // console.log('总权重', totalWeight)
+      // console.log('随机数', Math.floor(Math.random() * totalWeight))
+
+      let indexArray = [] // 0 1 2 三个下标产生的概率放到数组中
+      p.forEach((ele, index) => {
+        let i = 0
+        while (i < ele.w) {
+          indexArray.push(index)
+          i++
+        }
+      });
+
+      const randomIndex = Math.floor(Math.random() * totalWeight)
+      return p[indexArray[randomIndex]]
+    };
+
+    console.log('随机产生一个中奖的', rand(peoples))
+  </script>
+</body>
+
+</html>
