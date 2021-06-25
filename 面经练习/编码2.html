@@ -32,6 +32,26 @@
 
 
 <script>
+  // 面经 三年前端寒冬入大厂，收获蚂蚁、字节 offer 面经分享
+  // https://mp.weixin.qq.com/s/CFoTRNDXHbqenmW7jFVczg
+
+
+  Array.prototype.forEach = async function (callback, thisArg) {
+
+    let context = thisArg ? thisArg : window
+
+    let myArray = this
+    for (let index = 0; index < myArray.length; index++) {
+      await callback.call(context, myArray[index], index, myArray)
+    }
+  }
+
+
+
+  /**
+   * 输出以下代码运行结果，为什么
+   * 如果希望每隔 1s 输出一个结果，应该如何改造？注意不可改动 square 方法
+  */
   const list = [1, 2, 3]
   const square = num => {
     return new Promise((resolve, reject) => {
@@ -41,12 +61,96 @@
     })
   }
 
-  function test() {
-    list.forEach(async x => {
+  async function test() {
+    list.forEach(async x => { // 方法一 改写 forEach
       const res = await square(x)
       console.log(res)
     })
+
+    // 方法二 使用 for of
+    // for (let x of list) {
+    //   const res = await square(x)
+    //   console.log(res)
+    // }
   }
   test()
+
+
+
+
+  /**
+   * 实现一个批量请求函数 multiRequest(urls, maxNum)
+   * 要求：
+   * 要求最大并发数 maxNum
+   * 每当有一个请求返回，就留下一个空位，可以增加新的请求
+   * 所有请求完成后，结果按照 urls 里面的顺序依次打出
+  */
+  //  参考 https://blog.csdn.net/u012384510/article/details/112551429
+  function multiRequest(urls = [], maxNum) {
+
+    return new Promise((resolve, reject) => {
+
+      let count = 0
+      const total = urls.length
+      let result = new Array(total).fill(false)
+
+      while (count < maxNum) {
+        addRequest()
+      }
+
+      function addRequest() {
+        let current = count
+        count += 1
+
+
+        if (current >= total) {
+
+          // 注意他们不是同时的
+          if (!result.includes(false)) {
+            resolve(result)
+          }
+          return
+        }
+        const url = urls[current]
+
+        console.log(`第 ${current + 1} 个请求发出=>>>>>，时间是 ${new Date().toLocaleDateString()}`)
+        fetch(url)
+          .then(res => {
+            console.log(`第 ${current + 1} 个请求回来=<<<<<<<，时间是 ${new Date().toLocaleDateString()}`)
+            result[current] = res
+
+            if (current < total) {
+              addRequest()
+            }
+          })
+          .catch(err => {
+            console.log(`第 ${current + 1} 个请求出错了，时间是 ${new Date().toLocaleDateString()}`)
+            result[current] = err
+
+            if (current < total) {
+              addRequest()
+            }
+          })
+      }
+    })
+
+  }
+
+  const testUrls = [
+    'https://jsonplaceholder.typicode.com/todos/1',
+    'https://jsonplaceholder.typicode.com/users',
+    'https://jsonplaceholder.typicode.com/users',
+    'https://jsonplaceholder.typicode.com/users',
+    'https://jsonplaceholder.typicode.com/users',
+    'https://jsonplaceholder.typicode.com/users',
+    'https://jsonplaceholder.typicode.com/users',
+    'https://jsonplaceholder.typicode.com/users',
+    'https://jsonplaceholder.typicode.com/users',
+  ]
+
+  multiRequest(testUrls, 3).then(result => {
+    console.log(result)
+  })
+
 
 </script>

@@ -67,7 +67,7 @@
   //   console.log('res', res)
   // })
 
-  // 5. 
+  // 
   new Promise(resolve => {
     resolve(1)
   }).then(() => {
@@ -78,5 +78,15 @@
   }).then(data => {
     console.log('5. data：', data)
   })
+
+
+  // 测试 Promise.resolve()
+  setTimeout(function () {
+    console.log('three');
+  }, 0);
+  Promise.resolve().then(function () {
+    console.log('two');
+  });
+  console.log('one');
 
 </script>

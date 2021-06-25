@@ -1,47 +1,48 @@
 <script>
+  //   面试官连环追问：数组拍平（扁平化） flat 方法实现
+  // https://www.jianshu.com/p/54609c2eec4e
   const arr = [1, 2, 3, 4, [1, 2, 3, [1, 2, 3, [1, 2, 3]]], 5, "string", { name: "弹铁蛋同学" }];
 
-  console.log(arr.flat(Infinity))
+  console.log(arr.flat())
 
 
 
   // 方法一
   // function myFlat(array) {
-  //   const flatArray = []
+  //   let flatArray = []
 
-  //   for (let key in array) {
-  //     item = array[key]
+  //   for (let item of array) {
   //     if (Array.isArray(item)) {
-  //       flatArray.push(...myFlat(item))
-  //       // flatArray = flatArray.concat(myFlat(item))
+  //       flatArray = flatArray.concat(myFlat(item))
   //     } else {
   //       flatArray.push(item)
   //     }
   //   }
 
   //   return flatArray
-
   // }
+
+  // console.log('方法一', myFlat(arr))
 
 
   // 这里的写法 参考了深拷贝
-  function myFlat2(item) {
-    if (Array.isArray(item)) {
-      let flatArray = []
+  // function myFlat2(item) {
+  //   if (Array.isArray(item)) {
+  //     let flatArray = []
 
-      // for (const key in item) {
-      //   flatArray = flatArray.concat(myFlat2(item[key]))
-      // }
-      item.forEach(ele => {
-        flatArray = flatArray.concat(myFlat2(ele))
-      })
+  //     // for (const key in item) {
+  //     //   flatArray = flatArray.concat(myFlat2(item[key]))
+  //     // }
+  //     item.forEach(ele => {
+  //       flatArray = flatArray.concat(myFlat2(ele))
+  //     })
 
-      return flatArray
-    } else {
-      return item
-    }
-  }
-  console.log(myFlat2(arr))
+  //     return flatArray
+  //   } else {
+  //     return item
+  //   }
+  // }
+  // console.log(myFlat2(arr))
 
 
 
@@ -54,28 +55,103 @@
 
   // 方法三 stack， 不要用 queue 会改变顺序
   // 从后面一个一个判断 结果用 unshift 处理
-  function myFlat(array) {
+  // function myFlat(array) {
 
-    const stack = [].concat(array)
+  //   const stack = [].concat(array)
 
-    const flatArray = []
+  //   const flatArray = []
 
-    while (stack.length) {
-      let item = stack.pop()
+  //   while (stack.length) {
+  //     let item = stack.pop()
 
-      if (Array.isArray(item)) {
-        stack.push(...item) // 如果是数组再次入栈，并且展开了一层
+  //     if (Array.isArray(item)) {
+  //       stack.push(...item) // 如果是数组再次入栈，并且展开了一层
+  //     } else {
+  //       flatArray.unshift(item)
+  //     }
+  //   }
+
+  //   return flatArray
+  // }
+
+
+
+  // console.log(myFlat(arr))
+
+  // 后面想想 array.myFlat() 是否可以实现
+
+
+
+
+  // Array.prototype.myFlat = function (layout) {
+  //   const newArray = []
+  //   const _array = this
+  //   let count = 0
+
+  //   const inner = (item) => {
+  //     count += 1
+
+  //     for (let i = 0; i < item.length; i++) {
+  //       let ele = item[i]
+  //       if (Array.isArray(ele)) {
+  //         if (count > layout) {
+  //           newArray.push(ele)
+  //           return
+  //         }
+  //         inner(ele)
+  //       } else {
+  //         newArray.push(ele)
+  //       }
+  //     }
+  //   }
+  //   inner(_array)
+  //   return newArray
+  // }
+
+  // 使用 reduce
+  // Array.prototype.myFlat = function () {
+  //   const _array = this
+  //   const newArray = []
+
+  //   const inner = (item) => {
+  //     return item.reduce((result, current) => {
+  //       return result.concat(Array.isArray(current) ? inner(current) : current)
+  //     }, [])
+  //   }
+
+  //   return inner(_array)
+  // }
+
+
+  // console.log(arr.myFlat(1))
+
+
+
+  Array.prototype.myFlat2 = function (layout = 1) {
+    const _array = this
+    const stack = _array.slice()
+    const result = []
+    let count = 0
+
+    while (stack.length > 0) {
+      count++
+      const lastItem = stack.pop()
+      if (Array.isArray(lastItem)) {
+        if (count > layout) {
+          result.unshift(lastItem)
+          continue
+        }
+        stack.push(...lastItem)
       } else {
-        flatArray.unshift(item)
+        result.unshift(lastItem)
       }
     }
 
-    return flatArray
+    return result
   }
 
+  console.log(arr.myFlat2())
 
 
-  console.log(myFlat(arr))
 
-  // 后面想想 array.myFlat() 是否可以实现
 </script>

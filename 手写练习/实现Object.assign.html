@@ -1,4 +1,5 @@
 <script>
+  // Object.keys 
   // 可枚举的属性浅拷贝一份
   function myAssign(target, ...sources) {
 
@@ -19,8 +20,10 @@
 
   const a = { a: 123 }
   const b = { b: 456 }
+  const c = { c: 789 }
 
-  console.log(Object.assign(a, b))
-  console.log(myAssign(a, b))
+
+  console.log(Object.assign(a, b, c))
+  console.log(myAssign(a, b, c))
 
 </script>

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+
+  <style>
+    .container {
+      display: flex;
+      flex-direction: column;
+      text-align: center;
+      height: 100vh;
+    }
+    .header, .footer {
+      height: 100px;
+      background-color: pink;
+    }
+    .content {
+      height: calc(100vh - 200px);
+      background-color: skyblue;
+    }
+  </style>
+</head>
+
+
+<body>
+
+  <div class="container">
+    <div class="header">header</div>
+    <div class="content">content</div>
+    <div class="footer">footer</div>
+  </div>
+
+
+
+  <script src="https://cdn.bootcdn.net/ajax/libs/vue/3.1.1/vue.global.prod.js"></script>
+  <div id="app">
+    年龄：
+    <span v-show="!inputVisible">{{age}}</span>
+    <input v-show="inputVisible" v-model="ageValue" type="number" @change="changeAge" />
+
+    <small v-show="!inputVisible" @click="clickEdit">编辑</small>
+    <small v-show="inputVisible" @click="clickSave">保存</small>
+  </div>
+
+  <script>
+    const App = {
+
+      setup() {
+        const state = Vue.reactive({
+          age: 23,
+          ageValue: undefined,
+          inputVisible: false
+        })
+
+        const changeAge = (e) => {
+          state.ageValue = e.target.value
+        }
+
+        const clickSave = () => {
+          if (isNaN(state.ageValue)) {
+            window.alert('年龄必须是数字!')
+            return
+          }
+          state.inputVisible = false
+          state.age = state.ageValue
+        }
+
+        const clickEdit = () => {
+          console.log('clickEdit')
+          state.inputVisible = true
+        }
+
+        return {
+          ...Vue.toRefs(state),
+          changeAge,
+          clickEdit,
+          clickSave
+        }
+      }
+    }
+
+    Vue.createApp(App).mount('#app')
+  </script>
+
+
+</body>
+
+</html>

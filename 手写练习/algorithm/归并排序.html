@@ -1,0 +1,56 @@
+<script>
+  // 参考 https://stackabuse.com/merge-sort-in-python
+  // with an average complexity of O(nlogn).
+
+
+  function mergeSort(array, leftIndex, rightIndex) {
+    if (leftIndex >= rightIndex) return
+
+    const middleIndex = Math.floor((leftIndex + rightIndex) / 2)
+    mergeSort(array, leftIndex, middleIndex)
+    mergeSort(array, middleIndex + 1, rightIndex)
+    merge(array, leftIndex, rightIndex, middleIndex)
+  }
+
+
+  function merge(array, leftIndex, rightIndex, middleIndex) {
+    const leftCopyArray = array.slice(leftIndex, middleIndex + 1)
+    const rightCopyArray = array.slice(middleIndex + 1, rightIndex + 1)
+
+
+    let leftCopyIndex = 0, rightCopyIndex = 0, sortedIndex = leftIndex
+
+    while (leftCopyIndex < leftCopyArray.length && rightCopyIndex < rightCopyArray.length) {
+      if (leftCopyArray[leftCopyIndex] <= rightCopyArray[rightCopyIndex]) {
+        console.log(123, array[sortedIndex])
+        array[sortedIndex] = leftCopyArray[leftCopyIndex]
+        leftCopyIndex += 1
+      } else {
+        array[sortedIndex] = rightCopyArray[rightCopyIndex]
+        rightCopyIndex += 1
+      }
+      sortedIndex += 1
+    }
+
+
+
+    while (leftCopyIndex < leftCopyArray.length) {
+      array[sortedIndex] = leftCopyArray[leftCopyIndex]
+      leftCopyIndex += 1
+      sortedIndex += 1
+    }
+
+    while (rightCopyIndex < rightCopyArray.length) {
+      array[sortedIndex] = rightCopyArray[rightCopyIndex]
+      rightCopyIndex += 1
+      sortedIndex += 1
+    }
+
+  }
+
+
+  array = [33, 42, 9, 37, 8, 47, 5, 29, 49, 31, 4, 48, 16, 22, 26]
+  mergeSort(array, 0, array.length - 1)
+  console.log(array)
+
+</script>

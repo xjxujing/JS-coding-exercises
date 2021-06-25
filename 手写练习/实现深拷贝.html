@@ -30,53 +30,55 @@
   // console.log(tempDeepClone(testObj))
 
   // 使用递归应该 从要传参的值就进行判断！！！！把第一次的 obj 当做上一次的属性值
-  const deepClone = function (target, map = new Map()) {
-    if (typeof target === 'object') {
-      // 只有一层的时候要做的事
+  // const deepClone = function (target, map = new Map()) {
+  //   if (typeof target === 'object') {
+  //     // 只有一层的时候要做的事
 
-      if (map.has(target)) {
-        return map.get(target)
-      }
+  //     if (map.has(target)) {
+  //       return map.get(target)
+  //     }
 
-      let cloneTarget = Array.isArray(target) ? [] : {};
-      map.set(target, cloneTarget)
+  //     let cloneTarget = Array.isArray(target) ? [] : {};
+  //     map.set(target, cloneTarget)
 
-      for (const key in target) {
-        if (target.hasOwnProperty(key)) {
-          cloneTarget[key] = deepClone(target[key], map)
-        }
-      }
-      return cloneTarget
+  //     for (const key in target) {
+  //       if (target.hasOwnProperty(key)) {
+  //         cloneTarget[key] = deepClone(target[key], map)
+  //       }
+  //     }
+  //     return cloneTarget
 
-    } else {
-      return target
-    }
-  }
+  //   } else {
+  //     return target
+  //   }
+  // }
 
-  const clonedObj = deepClone(testObj)
-  console.log('克隆后的 对象', clonedObj)
+  // const clonedObj = deepClone(testObj)
+  // console.log('克隆后的 对象', clonedObj)
 
 
 
-  const deepClone2 = function (obj) {
 
-    const newObj = {}
-    let stack = [obj]
+  // 栈思想
+  // const deepClone2 = function (obj) {
 
-    while (stack.length) {
-      let temp = stack.unshift()
+  //   const newObj = {}
+  //   let stack = [obj]
 
-      for (let key in temp) {
-        if (typeof temp[key] === 'object') {
-          stack.push(temp[key])
-        } else {
-          newObj[key] = temp[key]
-        }
-      }
-    }
-    return newObj
-  }
+  //   while (stack.length) {
+  //     let temp = stack.unshift()
 
-  const clonedObj2 = deepClone2(testObj)
-  console.log('方法二 克隆后的 对象', clonedObj2)
+  //     for (let key in temp) {
+  //       if (typeof temp[key] === 'object') {
+  //         stack.push(temp[key])
+  //       } else {
+  //         newObj[key] = temp[key]
+  //       }
+  //     }
+  //   }
+  //   return newObj
+  // }
+
+  // const clonedObj2 = deepClone2(testObj)
+  // console.log('方法二 克隆后的 对象', clonedObj2)
 </script>

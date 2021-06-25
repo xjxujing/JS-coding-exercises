@@ -1,0 +1,82 @@
+<script>
+  const flatData = [
+    { name: '安徽', parent: null, id: 'anhui' },
+    { name: '合肥', parent: 'anhui', id: 'HF' },
+    { name: '蜀山区', parent: 'HF', id: 'SS' },
+    { name: '芜湖', parent: 'anhui', id: 'WH' },
+    { name: '江苏', parent: null, id: 'jiangsu' },
+    { name: '南京', parent: 'jiangsu', id: 'NJ' },
+  ]
+
+  const treeData = [
+    {
+      name: '安徽',
+      id: 'anhui',
+      children: [
+        {
+          name: '合肥',
+          parent: 'anhui',
+          id: 'HF',
+          children: [{ name: '蜀山区', parent: 'HF', id: 'SS' },]
+        },
+        { name: '芜湖', parent: 'anhui', id: 'WH' }
+      ]
+    },
+    {
+      name: '江苏', parent: null, id: 'jiangsu',
+      children: [{ name: '南京', parent: null, id: 'NJ' },]
+    }
+  ]
+
+
+
+  function transFlatToTree(data) {
+
+    const parents = [], parentsId = []
+
+
+    for (let key in data) {
+      const ele = data[key]
+      if (!ele.parent) {
+        parents.push(ele)
+        parentsId.push(ele.id)
+        continue
+      }
+      if (parentsId.includes(ele.parent)) {
+        const index = parents.findIndex(item => item.id === ele.parent)
+        if (!parents[index].children) {
+          parents[index].children = [ele]
+        } else {
+          parents[index].children.push(ele)
+        }
+      }
+    }
+
+    return parents
+  }
+
+  function transTreeToFlat(treeArray) {
+    const newArray = []
+
+    for (let tree of treeArray) {
+
+      const inner = (item) => {
+        newArray.push({
+          name: item.name,
+          id: item.id,
+          parent: item.parent ? item.parent : null
+        })
+        if (item.children && item.children.length !== 0) {
+          for(let child of item.children) {
+            inner(child)
+          }
+        }
+      }
+      inner(tree)
+    }
+
+    return newArray
+  }
+
+
+</script>

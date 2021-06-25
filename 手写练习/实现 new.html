@@ -1,0 +1,22 @@
+<script>
+  function myNew(constructorFn) {
+    function Fn() { }
+    Fn.prototype = Object.create(constructorFn.prototype)
+
+    const result = constructorFn.apply(newObject, arguments)
+    return typeof result === 'object' ? result : newObject
+  }
+
+
+  function foo() {
+    this.b = 100
+    return this.a
+  }
+
+  var func = foo.bind({ a: 1 })
+  console.log(func())
+  console.log(new func())
+
+  console.log(myNew(func()))
+
+</script>

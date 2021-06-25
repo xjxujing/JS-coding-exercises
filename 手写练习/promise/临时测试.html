@@ -1,0 +1,13 @@
+<script>
+  const p = Promise.reject(new Promise(resolve => resolve(123456789)));
+
+  p.then(y => {
+    console.log('yyyy', y)
+  }, r => {
+    console.log('rrrrr', r)
+    return r
+  }).then(y => {
+    console.log('第二层 yyyy', y)
+  })
+
+</script>

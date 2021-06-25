@@ -11,7 +11,7 @@
   //   return Object.getPrototypeOf(instanceObj)  === constructorFn.prototype
   // }
 
-  // instanceof 是判断构造函数的原型是否存在于 实例对象 的原型链上
+  // instanceof 是判断构造函数的原型(constructorFn.prototype) 是否存在于 实例对象 (instanceObj) 的原型链上
   function myInstanceof(instanceObj, constructorFn) {
 
     let instanceObjPrototype = Object.getPrototypeOf(instanceObj)
