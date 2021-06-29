@@ -1,0 +1,25 @@
+<script>
+  const str = "dvdf"
+
+
+  var lengthOfLongestSubstring = function (s) {
+    let str = s[0]
+    let max = 1
+
+    for (let i = 1; i < s.length; i++) {
+      if (str.includes(s[i])) {
+        const index = str.indexOf(s[i])
+        str = str.slice(index)
+      }
+      str += s[i]
+
+      if (max < str.length) {
+        max = str.length
+      }
+    }
+
+    return max
+  };
+
+  lengthOfLongestSubstring(str)
+</script>
