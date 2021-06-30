@@ -1,6 +1,44 @@
 <script>
 
+  const pubsSubs = {
+    events: {},
+    on(name, fn) {
+      if (!Object.keys(this.events).includes(name)) {
+        this.events[name] = [fn]
+        return this
+      }
+      this.events[name].push(fn)
+      return this
+    },
+    emit(name, data) {
+      if (Object.keys(this.events).includes(name)) {
+        const fns = this.events[name]
+        for (let fn of fns) {
+          fn(data)
+        }
+      }
+      return this
+    },
+    off(name, fn) {
+      let callbacks = this.events[name]
+      this.events[name] = callbacks && callbacks.filter(itemFn => itemFn !== fn)
+    }
+  }
+
+  const tempFn = (data) => {
+    console.log('自动执行 test2：', data)
+  }
 
 
-  
+  pubsSubs.on('test', (data) => {
+    console.log('自动执行 test：', data)
+  }).on('test2', tempFn)
+
+  pubsSubs.on('test2', () => {
+    console.log('这是另一个')
+  })
+
+
+  pubsSubs.emit('test2', 123).emit('test', 789798)
+  pubsSubs.off('test2', tempFn)
 </script>

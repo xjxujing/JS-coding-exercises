@@ -1,0 +1,13 @@
+<script>
+  // 有趣的前端编程题：携程 2018 春招
+  // https://juejin.cn/post/6844903585851899917#heading-5
+  // 给定一个长度小于 50 且包含字母和数字的任意字符串，
+  // 要求按顺序取出当中的数字和英文字母，数字需要去重，重新排列后的字符串数字在前，字母在后。
+
+  let str = '携程C2t0r1i8p2020校招'
+
+  function filterCharacter(str) {
+    return str.replace(/\D\W/g, '')
+  }
+  
+</script>
