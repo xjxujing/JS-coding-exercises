@@ -1,7 +1,12 @@
 <script>
-  const arr = [1, "true", true, 15, false, undefined, null, NaN, "NaN", 0, "a", {}, {}]
+  const arr = [1, 1, "true", true, true, 15, "15", false, undefined, undefined, null, null, NaN, NaN, "NaN", 0, "a", {}, {}]
+
+  function unique(arr) {
+
+    return [...new Set(arr)]
+  }
+  console.log('去重后：', unique(arr))
 
 
-  
 
 </script>

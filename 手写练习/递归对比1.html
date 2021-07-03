@@ -1,0 +1,85 @@
+<script>
+  // 直接的那种递归
+  // 深拷贝
+  const testObj = {
+    a: 1,
+    b: {
+      c: 1,
+      d: 2
+    },
+    field3: {
+      child: 'child'
+    },
+  }
+
+  function deepClone(obj) {
+    if (typeof obj !== 'object') return obj
+
+    const tempObj = Array.isArray(obj) ? [] : {}
+    for (let key in obj) {
+      if (obj.hasOwnProperty(key)) {
+        tempObj[key] = deepClone(obj[key])
+      }
+    }
+    return tempObj
+  }
+
+
+  const clonedObj2 = deepClone(testObj)
+  clonedObj2.field3.child = '改了'
+  console.log('原对象', testObj)
+  console.log('克隆后的 对象', clonedObj2)
+
+
+
+  // 数组拍平
+  const arr = [1, 2, 3, 4, [1, 2, 3, [1, 2, 3, [1, 2, 3]]], 5, "string", { name: "弹铁蛋同学" }];
+
+  function flat(array) {
+    if (!Array.isArray(array)) return array
+
+    let tempItem = []
+    array.forEach(ele => {
+      tempItem = tempItem.concat(flat(ele))
+      // tempItem.push(...ele)
+    })
+    return tempItem
+  }
+
+  console.log('拍平后', flat(arr))
+
+
+  // 颠倒嵌套的数组
+  const nArray = [1, 2, [3, [6, 7, 8]], 10, [11, 12]]
+  // 颠倒后 [[12, 11], 10, [[8, 7, 6], 3], 2, 1]   不能用 reverse
+
+  function myReverse(item) {
+    if (!Array.isArray(item)) return item
+
+    const tempArray = []
+    item.forEach(ele => {
+      tempArray.unshift(myReverse(ele))
+    })
+    return tempArray
+  }
+
+
+  function reverse(arr) {
+    const mid = arr.length / 2
+
+    for (let index = 0; index < mid; index++) {
+      const x = index
+      const y = arr.length - index - 1
+
+      if (x !== y) {
+        const temp = typeof arr[x] === 'number' ? arr[x] : reverse(arr[x])
+        arr[x] = typeof arr[y] === 'number' ? arr[y] : reverse(arr[y])
+        arr[y] = temp
+      } else if (typeof arr[x] !== 'number') arr[x] = reverse(arr[x])
+    }
+
+    return arr
+  }
+
+  console.log('颠倒数组的结果', myReverse(nArray))
+</script>

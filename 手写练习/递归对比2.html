@@ -1,0 +1,78 @@
+<script>
+  // 迭代的思想
+  // 深拷贝
+  const testObj = {
+    a: 1,
+    b: {
+      c: 1,
+      d: 2
+    },
+    field3: {
+      child: 'child'
+    },
+  }
+
+  function deepClone(obj) {
+    const result = {}
+    const queue = [obj]
+    const copyQueue = [result]
+
+    while (queue.length) {
+      const item = queue.shift()
+      const _item = copyQueue.shift();
+
+      if (typeof item === 'object') {
+        for (let key in item) {
+          if (item.hasOwnProperty(key)) {
+
+            if (typeof item[key] === 'object') {
+              queue.push(item[key])
+              _item[key] = {}
+              copyQueue.push(_item[key])
+
+            } else {
+              _item[key] = item[key]
+            }
+          }
+        }
+      }
+    }
+    return result
+  }
+
+  const clonedObj2 = deepClone(testObj)
+  clonedObj2.field3.child = '改了'
+  console.log('原对象', testObj)
+  console.log('克隆后的 对象', clonedObj2)
+
+
+
+  // 数组拍平
+  const arr = [1, 2, 3, 4, [1, 2, 3, [1, 2, 3, [1, 2, 3]]], 5, "string", { name: "弹铁蛋同学" }];
+
+  function flat(array) {
+    const result = []
+    const stack = [array]
+
+    while (stack.length) {
+      const item = stack.pop()
+
+      if (!Array.isArray(item)) {
+        result.unshift(item)
+        break
+      }
+      stack.push(...item)
+    }
+    return result
+  }
+  console.log('拍平后', flat(arr))
+
+
+  // 颠倒嵌套的数组
+  const nArray = [1, 2, [3, [6, 7, 8]], 10, [11, 12]]
+  // 颠倒后 [[12, 11], 10, [[8, 7, 6], 3], 2, 1]   不能用 reverse
+
+
+
+  // console.log('颠倒数组的结果', myReverse(nArray))
+</script>

@@ -1,10 +1,14 @@
 <script>
-  function myNew(constructorFn) {
-    function Fn() { }
-    Fn.prototype = Object.create(constructorFn.prototype)
+  function myNew(constructorFn, ...args) {
+    // function Fn() { }
+    // Fn.prototype = Object.create(constructorFn.prototype)
+    // const result = constructorFn.apply(newObject, arguments)
+    // return typeof result === 'object' ? result : newObject
 
-    const result = constructorFn.apply(newObject, arguments)
-    return typeof result === 'object' ? result : newObject
+    const newObj = {}
+    newObj.__proto__ = constructorFn.prototype
+    const result = constructorFn.apply(newObj, args)
+    return typeof result === 'object' ? result : newObj
   }
 
 
@@ -17,6 +21,6 @@
   console.log(func())
   console.log(new func())
 
-  console.log(myNew(func()))
+  console.log(myNew(func))
 
 </script>
