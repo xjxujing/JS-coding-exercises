@@ -1,0 +1,23 @@
+<script>
+  // 1 秒钟打印
+  const arr = [1, 2, 3, 4, 5]
+  function printArrItem(arr) {
+    let timer = null
+    let i = 0
+    let len = arr.length
+
+    const inner = () => {
+      if (i >= len) {
+        return
+      }
+      setTimeout(() => {
+        console.log(arr[i])
+        i++
+        inner()
+      }, 1000)
+    }
+    inner(arr)
+  }
+
+  printArrItem(arr)
+</script>

@@ -1,0 +1,44 @@
+<script>
+  // 参考 ES6的类和其继承的实现原理 https://www.jianshu.com/p/e4faff42e7ff
+
+  class Parent {
+    constructor(name, age) {
+      this.name = name;
+      this.age = age;
+    }
+    speakSomething() {
+      console.log("I can speak chinese");
+    }
+  }
+
+  class Child extends Parent {
+    constructor(name, age) {
+      super(name, age);
+    }
+    coding() {
+      console.log("I can code JS");
+    }
+  }
+
+
+  function Parent(name, age) {
+    this.name = name;
+    this.age = age;
+  }
+  Parent.prototype.speakSomething = function () {
+    console.log("I can speak chinese");
+  }
+
+
+  function Child(name, age) {
+    Parent.call(this, name, age)
+  }
+
+  Child.prototype = new Parent()
+  Child.prototype.constructor = Child
+
+  Child.prototype.coding = function () {
+    console.log("I can code JS");
+  }
+
+</script>

@@ -3,39 +3,75 @@
   // with an average complexity of O(nlogn).
 
 
-  function partition(array, start, end) {
-    const pivot = array[start]
-    let left = start + 1, right = end
-    // debugger
+  // function partition(array, start, end) {
+  //   const pivot = array[start]
+  //   let left = start + 1, right = end
+  //   // debugger
+  //   while (true) {
+  //     while (left <= right && array[right] >= pivot) {
+  //       right--
+  //     }
+  //     while (left <= right && array[left] <= pivot) {
+  //       left++
+  //     }
+  //     if (left <= right) {
+  //       [array[left], array[right]] = [array[right], array[left]]
+  //     } else {
+  //       break
+  //     }
+  //   }
+
+  //   [array[start], array[right]] = [array[right], array[start]]
+  //   return right
+  // }
+
+
+  // function quickSort(array, start, end) {
+  //   if (start >= end) return
+
+  //   const p = partition(array, start, end)
+  //   quickSort(array, start, p - 1)
+  //   quickSort(array, p + 1, end)
+  // }
+
+
+  const testArr = [29, 99, 27, 41, 66, 28, 44, 78, 87, 19, 31, 76, 58, 88, 83, 97, 12, 21, 44]
+  // quickSort(testArr, 0, testArr.length - 1)
+
+
+  // 再写一遍
+  function myPartition(array, start, end) {
+    let base = array[start], leftIdx = start + 1, rightIdx = end
+
     while (true) {
-      while (left <= right && array[right] >= pivot) {
-        right--
+      while (array[rightIdx] >= base && leftIdx <= rightIdx) {
+        rightIdx--
       }
-      while (left <= right && array[left] <= pivot) {
-        left++
+      while (array[leftIdx] <= base && leftIdx <= rightIdx) {
+        leftIdx++
       }
-      if (left <= right) {
-        [array[left], array[right]] = [array[right], array[left]]
+
+      if (leftIdx <= rightIdx) { //去掉上面两种情况，剩下的情况也就是 array[rightIdx] <= base 或 array[leftIdx] >= base
+        [array[rightIdx], array[leftIdx]] = [array[leftIdx], array[rightIdx]]
       } else {
         break
       }
     }
 
-    [array[start], array[right]] = [array[right], array[start]]
-    return right
+    // 前面都调换好了后，base 放到属于它的位置
+    [array[rightIdx], array[start]] = [array[start], array[rightIdx]]
+    return rightIdx
   }
 
 
-  function quickSort(array, start, end) {
+  function myQuickSort(array, start, end) {
     if (start >= end) return
 
-    const p = partition(array, start, end)
-    quickSort(array, start, p - 1)
-    quickSort(array, p + 1, end)
+    const p = myPartition(array, start, end)
+     // 注意递归的时候就不要带上已经在正确位置上的索引了
+    myQuickSort(array, start, p - 1)
+    myQuickSort(array, p + 1, end)
   }
 
-
-  const testArr = [29,99,27,41,66,28,44,78,87,19,31,76,58,88,83,97,12,21,44]
-  quickSort(testArr, 0, testArr.length - 1)
-
+  myQuickSort(testArr, 0, testArr.length - 1)
 </script>

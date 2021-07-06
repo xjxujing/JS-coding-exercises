@@ -12,16 +12,20 @@
   <div id="box">
     text:
   </div>
-  <button id="btn">加入元素</button>
+  <button id="btn">点击</button>
 
   <script>
-    window.onload = function () {
-      const sleep = (time) => {
-        const startTime = Date.now()
-        while (Date.now() - startTime < time) {}
-      }
-      sleep(1000)
-      console.log(1)
+    const sleep = (fn, time) => {
+      const startTime = Date.now()
+      while (Date.now() - startTime < time) { }
+      fn()
+    }
+    function addOne() {
+      console.log('addOne')
+    }
+
+    btn.onclick = () => {
+      sleep(addOne, 2000)
     }
 
   </script>
